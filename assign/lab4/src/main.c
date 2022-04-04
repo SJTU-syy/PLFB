@@ -1,9 +1,7 @@
-/* lab4/src/main.c */
-#include "hello.h"
+#include"genbank.h"
+#include"fasta.h"
 
-int main()
-{
-   sayHello("world");
-   
-   return 0;
+
+int main(){
+
 }
