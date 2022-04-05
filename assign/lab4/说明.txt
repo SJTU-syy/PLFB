@@ -1,0 +1,13 @@
+- 使用:
+
+运行./bin中的transform.static即可由NM000207.gb得到NM000207.fasta文件
+
+使用的lib_genbank和lib_fasta均为静态库
+
+- 当前仅完成了最基本的功能,包括:
+1. 得到ORIGIN的序列
+2. 分析gene\mRNA\CDS的实际序列
+    - 暂时只能分析单个连续序列
+3. 输出gene\mRNA\CDS的”/gene”属性
+
+- FEATURE这种结构体的写法不是最好的,但是比较反应处理这个lab的思路,即业务分离,genbank完全负责构造一个独立的结构体,储存某个feature的所需信息

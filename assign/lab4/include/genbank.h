@@ -1,19 +1,21 @@
 #ifndef __GENBANK__
 #define __GENBANK__
-#include<stdio.h>
 
 typedef struct Features{
-    const char* name;
-    const char* gene_name;
-    char* list;
+    char* name;
     char* codon_table;
+    char gene_name[10];
+    char* list[];
+    //又一个欲哭无泪的bug,虽然C手册里写了string函数(strcat,strcpy)的要求只是char*,但测试发现上这里必须用动态char数组完成
 }FEATURE;
 
-char* Origin(FILE* instream);
+
+int string_to_int(char* pos);
+char* getOrigin(FILE* instream,char* p);
 int genflag( const char* string);
-FEATURE* gene(const char* string,const char* origin);
-FEATURE* mRNA(const char* string,const char* origin);
-FEATURE* CDS(const char* string,const char* origin);
+FEATURE* gene(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
+FEATURE* mRNA(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
+FEATURE* CDS(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
 
 
 #endif
