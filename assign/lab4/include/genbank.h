@@ -19,6 +19,7 @@ int genflag( const char* string);
 FEATURE* gene(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
 FEATURE* mRNA(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
 FEATURE* CDS(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
+void amino(char* DNA);
 
 
 #endif

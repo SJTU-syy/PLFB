@@ -19,9 +19,10 @@ int main() {
  	FILE *fi; fi = fopen(FILE_NAME_IN, "r");
 	FILE *fo; fo = fopen(FILE_NAME_OUT, "w");
     char ORIGIN[1000];
+	memset(ORIGIN,0,strlen(ORIGIN));
 	getOrigin(fi,ORIGIN);
     //printf("%s\n\n",ORIGIN);
-    fprintf(fo,">ORIGIN\n%s\n",ORIGIN);
+    fprintf(fo,">ORIGIN\n%s\n\n",ORIGIN);
     
     
     fseek(fi,0,SEEK_SET); //需要更新主文件流fi

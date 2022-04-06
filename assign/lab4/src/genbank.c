@@ -18,10 +18,11 @@ int string_to_int(char* pos){
 
 void getOrigin(FILE* instream,char* p){
 	char string[101];
+	memset(string,0,strlen(string));
 	while(fgets(string,101,instream)!=NULL){
 		if(strstr(string,"ORIGIN")==string){
 			//printf("find origin!\n");
-			//printf("%s\n",string);
+			printf("%s\n",string);
 			while(fgets(string,101,instream)!=NULL&&strchr(string,'/')!=string){
 				int i = 0;
 				strncat(p,string+10,10);
@@ -39,7 +40,7 @@ void getOrigin(FILE* instream,char* p){
 			while(*p1!='\0'&&*p1!='\n'){
 				p1+=1;
 			}
-			*p1 = '\0';
+			*p1 =0;
 			//测试发现因为strncat和fgets的特性,ORIGIN会多出一段(每次更新的时候结尾可能不被覆盖),包括strlen(ORIGIN)的返回也是对的,但是要处理以输出正确的原始序列
 		}
 	}
@@ -129,7 +130,74 @@ FEATURE* CDS(FILE* instream,FEATURE* tmp,const char* origin,char* string_list){
 	fgets(string,101,instream); //默认/gene紧接在第二行
 	strcpy(tmp->gene_name,string+27);
 		//printf("%s\n",tmp->gene_name);
+
+		
+	//子密码表
+	while(fgets(string,100,instream)!=NULL){
+		if(strstr(string,"/translation")==string + 21){
+			//printf("test-node\n");
+			//printf("string:%s\n",string);
+			int flag = 1;
+			int i=0;
+			//printf("tmp->codon_table:%s\n",tmp->codon_table);
+			while(flag){
+				POS=string;i=0;
+				while(*(POS)!='\0'&&*(POS)!='\n'){
+					if (*(POS)=='"'&&*(POS-1)!='=')
+					{flag=0;
+					//printf("string:%s\n",string);
+					//printf("find fuhao in %d\n",i);
+					break;}
+					POS++;
+					i++;
+				}
+				if(flag){
+					strcat(tmp->codon_table,string+21);
+					fgets(string,100,instream);
+					//printf("tmp->codon_table:%s\n",tmp->codon_table);
+				}
+				else{
+					strncat(tmp->codon_table,string+21,i-20);
+					//printf("tmp->codon_table:%s\n",tmp->codon_table);
+					break;
+				}
+			}
+		}
+	}
+	amino(tmp->codon_table);
 	return tmp;
 	
 	
 };
+
+void amino(char* DNA){
+	char acid[1000];
+	memset(acid,0,strlen(acid));
+	char* p = DNA+14;
+	while((*p)!='"'){
+		if(*p=='G') strcat(acid,"GGU");
+		else if (*p=='G') strcat(acid,"GGU");
+		else if (*p=='A') strcat(acid,"AUU");
+		else if (*p=='V') strcat(acid,"GUU");
+		else if (*p=='L') strcat(acid,"CUU");
+		else if (*p=='I') strcat(acid,"AUC");
+		else if (*p=='F') strcat(acid,"UUU");
+		else if (*p=='w') strcat(acid,"UGG");
+		else if (*p=='Y') strcat(acid,"UAU");
+		else if (*p=='D') strcat(acid,"GAU");
+		else if (*p=='H') strcat(acid,"CAU");
+		else if (*p=='N') strcat(acid,"AAU");
+		else if (*p=='E') strcat(acid,"GAA");
+		else if (*p=='K') strcat(acid,"AAA");
+		else if (*p=='Q') strcat(acid,"CAA");
+		else if (*p=='M') strcat(acid,"AUG");
+		else if (*p=='R') strcat(acid,"AGA");
+		else if (*p=='S') strcat(acid,"AGU");
+		else if (*p=='T') strcat(acid,"ACU");
+		else if (*p=='C') strcat(acid,"UGU");
+		else if (*p=='P') strcat(acid,"CCU");
+		p++;
+	}
+	memset(DNA,0,strlen(DNA));
+	strcpy(DNA,acid);
+}
