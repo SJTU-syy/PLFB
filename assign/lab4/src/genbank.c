@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"../include/genbank.h"
 
 
 int string_to_int(char* pos){
@@ -15,7 +16,7 @@ int string_to_int(char* pos){
 }
 
 
-char* getOrigin(FILE* instream,char* p){
+void getOrigin(FILE* instream,char* p){
 	char string[101];
 	while(fgets(string,101,instream)!=NULL){
 		if(strstr(string,"ORIGIN")==string){
@@ -25,22 +26,23 @@ char* getOrigin(FILE* instream,char* p){
 				int i = 0;
 				strncat(p,string+10,10);
 				for(i=1;i<6;i++){
-					strncat(p,string+10+11*i,10);  //经过长久的测验,发现这里一开始出错的原因是,strcat中的前一个char*不能为NULL(NULL被视作const),也不能用常量初始化,可以直接只写定义,或者直接写成char* ORIGIN = getOrigin(fi,ORIGIN)
+					strncat(p,string+10+11*i,10);  //经过长久的测验,发现这里一开始出错的原因是,strcat中的前一个char*不能为NULL(NULL被视作const),也不能用常量初始化,最好还是用动态字符数组
+					//printf("%s\n",p);
+					//printf("%s\n",string+10+11*i,10);
 				} 
 				//printf("%s\n",string+10);
 				//printf("%d\n",strlen(string));
 			}
 			//printf("%s\n",p); 
+			
 			char* p1 = p;
 			while(*p1!='\0'&&*p1!='\n'){
 				p1+=1;
 			}
 			*p1 = '\0';
 			//测试发现因为strncat和fgets的特性,ORIGIN会多出一段(每次更新的时候结尾可能不被覆盖),包括strlen(ORIGIN)的返回也是对的,但是要处理以输出正确的原始序列
-			return p;
 		}
 	}
-	return 0;
 };
 
 

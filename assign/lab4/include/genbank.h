@@ -1,5 +1,8 @@
 #ifndef __GENBANK__
 #define __GENBANK__
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
 typedef struct Features{
     char* name;
@@ -11,7 +14,7 @@ typedef struct Features{
 
 
 int string_to_int(char* pos);
-char* getOrigin(FILE* instream,char* p);
+void getOrigin(FILE* instream,char* p);
 int genflag( const char* string);
 FEATURE* gene(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);
 FEATURE* mRNA(FILE* instream,FEATURE* tmp,const char* origin,char* string_list);

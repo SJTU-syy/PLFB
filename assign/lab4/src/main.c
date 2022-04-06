@@ -1,10 +1,10 @@
-#include"fasta.h"
-#include"genbank.h"
+#include"../include/fasta.h"
+#include"../include/genbank.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 
-#define FILE_NAME_IN "../data/genbank/MN000207.gb"
+#define FILE_NAME_IN "../data/genbank/NM000207.gb"
 #define FILE_NAME_OUT "../data/fasta/NM000207.fasta"
 #define N 100
 
@@ -18,7 +18,8 @@ int main() {
 	
  	FILE *fi; fi = fopen(FILE_NAME_IN, "r");
 	FILE *fo; fo = fopen(FILE_NAME_OUT, "w");
-    char* ORIGIN = getOrigin(fi,ORIGIN);
+    char ORIGIN[1000];
+	getOrigin(fi,ORIGIN);
     //printf("%s\n\n",ORIGIN);
     fprintf(fo,">ORIGIN\n%s\n",ORIGIN);
     
