@@ -70,9 +70,10 @@ FEATURE* gene(FILE* instream,FEATURE* tmp,const char* origin,char* string_list){
 		}
 		POS++;
 	}
-	printf("%d\n%d\n",start,end);
+	//printf("%d\n%d\n",start,end);
+	memset(tmp->list, 0, strlen(tmp->list));
 	strncpy(tmp->list,origin+start-1,end-start+1);
-	*(tmp->list+end+1) = '\0';
+	//*(tmp->list+end+1) = '\0';
 	fgets(string,101,instream); //默认/gene紧接在第二行
 	strcpy(tmp->gene_name,string+27);
 	//printf("%s\n",tmp->gene_name);
@@ -95,9 +96,10 @@ FEATURE* mRNA(FILE* instream,FEATURE* tmp,const char* origin,char* string_list){
 		}
 		POS++;
 	}
-	printf("%d\n%d\n",start,end);
+	//printf("%d\n%d\n",start,end);
+	memset(tmp->list, 0, strlen(tmp->list));
 	strncpy(tmp->list,origin+start-1,end-start+1);
-	*(tmp->list+end+1) = '\0';
+	//*(tmp->list+end+1) = '\0';
 	fgets(string,101,instream); //默认/gene紧接在第二行
 	strcpy(tmp->gene_name,string+27);
 		//printf("%s\n",tmp->gene_name);
@@ -107,7 +109,7 @@ FEATURE* mRNA(FILE* instream,FEATURE* tmp,const char* origin,char* string_list){
 FEATURE* CDS(FILE* instream,FEATURE* tmp,const char* origin,char* string_list){
 	
 	tmp->name = "CDS";
-	char string[101 + 1];
+	char string[100 + 1];
 	
 	//找序列位置
 	int start,end;
@@ -120,9 +122,10 @@ FEATURE* CDS(FILE* instream,FEATURE* tmp,const char* origin,char* string_list){
 		}
 		POS++;
 	}
-	printf("%d\n%d\n",start,end);
+	//printf("%d\n%d\n",start,end);
+	memset(tmp->list, 0, strlen(tmp->list));
 	strncpy(tmp->list,origin+start-1,end-start+1);
-	*(tmp->list+end+1) = '\0';
+	//*(tmp->list+end+1) = '\0'; //gdb发现这里采用了和windows不同的储存方法,这种形式控制长度在linux上好像不适用,还好查到了memset函数.
 	fgets(string,101,instream); //默认/gene紧接在第二行
 	strcpy(tmp->gene_name,string+27);
 		//printf("%s\n",tmp->gene_name);
