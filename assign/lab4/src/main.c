@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define FILE_NAME_IN "../data/genbank/NM000207.gb"
+#define FILE_NAME_IN "test.txt"
 #define FILE_NAME_OUT "../data/fasta/NM000207.fasta"
 #define N 100
 
@@ -16,18 +16,23 @@ FEATURE* TMP = &base;//TNND,一个bug修一年,欲哭无泪,终于找到了原�
 
 int main() {
 	
- 	FILE *fi; fi = fopen(FILE_NAME_IN, "r");
-	FILE *fo; fo = fopen(FILE_NAME_OUT, "w");
-    char ORIGIN[1000];
-	memset(ORIGIN,0,strlen(ORIGIN));
+ 	FILE *fi= fopen(FILE_NAME_IN, "r");
+	FILE *fo = fopen(FILE_NAME_OUT, "w");
+	printf("%c",fgetc(fi));
+    char str[N + 1];
+	printf("%s\n",str);
+
+    fgets(str,sizeof(str)-1,fi);
+	printf("%s\n",str);
+	
+	char ORIGIN[1000]="";
 	getOrigin(fi,ORIGIN);
-    //printf("%s\n\n",ORIGIN);
+    printf("%s\n",ORIGIN);
     fprintf(fo,">ORIGIN\n%s\n\n",ORIGIN);
-    
+    //printf("\ntestnode\n");
     
     fseek(fi,0,SEEK_SET); //需要更新主文件流fi
     FILE* ftmp = fi;
-    char str[N + 1];
 	
 	
     while(fgets(str,N,fi)!=NULL){
