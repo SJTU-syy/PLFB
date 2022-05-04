@@ -1,4 +1,3 @@
-//第三题
 #include<stdio.h>
 
 int main()
